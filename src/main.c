@@ -21,7 +21,7 @@ void print_usage(){
     puts("usage: ./ray-tracer <input-file>\n");
 }
 
-vector3u trace( 
+vector3f trace( 
         ray* ray,
         sphere** spheres,
         int recursiondepth,
@@ -35,10 +35,11 @@ vector3u trace(
         float t0 = INFINITY;
         float t1 = INFINITY;
         if(intersect(ray, (*spheres + i),t0,t1)){
-            return (vector3u){255,0,0};
+            return color_expand_vec3f(&(*spheres + i)->color_surface);
+            /* return (vector3u){255,0,0}; */
         }
     }
-    return (vector3u){0,0,0};
+    return (vector3f){0,0,0};
 }
 
 void render(vector3f* eye, sphere** spheres, unsigned char img[WIDTH*HEIGHT*3], size_t numspheres){
@@ -66,7 +67,7 @@ void render(vector3f* eye, sphere** spheres, unsigned char img[WIDTH*HEIGHT*3], 
             r.dir.z = -1;
             normalize_inplace(&r.dir);
 
-            vector3u color = trace(&r, spheres, 0, numspheres);
+            vector3f color = trace(&r, spheres, 0, numspheres);
             img[(x + y * WIDTH) * 3 + 0] = (unsigned char)color.x;
             img[(x + y * WIDTH) * 3 + 1] = (unsigned char)color.y;
             img[(x + y * WIDTH) * 3 + 2] = (unsigned char)color.z;

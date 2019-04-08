@@ -1,5 +1,23 @@
 #include "utils.h"
 
+float color_expand(float c){
+    return c*255;
+}
+
+vector3f color_expand_vec3f(const vector3f* c){
+    return (vector3f){
+        c->x*255,
+        c->y*255,
+        c->z*255,
+    };
+}
+
+void color_expand_vec3f_inplace(vector3f* c){
+        c->x*=255;
+        c->y*=255;
+        c->z*=255;
+}
+
 void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned int height){
 
     FILE *f;
