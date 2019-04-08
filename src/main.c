@@ -16,7 +16,7 @@ enum ERRORS{
 void print_usage(){
     // TODO 2
     // add parameters to help text
-    printf("usage: ./ray-tracer <input-file>\n");
+    puts("usage: ./ray-tracer <input-file>\n");
 }
 
 int main(int argc, char *argv[]){
@@ -28,10 +28,44 @@ int main(int argc, char *argv[]){
         print_usage();
         return INVALID_INPUT;
     }
-    sphere* spheres = NULL;
-    ray* rays       = NULL;
-    read_scene(argv[1], spheres, rays);
 
+    size_t numspheres;
+    vector3 eye = (vector3){0.0f,0.0f,0.0f};
+    sphere* spheres = NULL;
+
+    read_scene(argv[1], &numspheres, &spheres, &eye);
+    puts("finished loading scene");
+
+    printf(
+            "============\n"
+            "= Eye:\n"
+            "= x: %.2f\n"
+            "= y: %.2f\n"
+            "= z: %.2f\n"
+            "============\n\n",
+            eye.x,
+            eye.y,
+            eye.z
+        );
+
+    for(int i = 0; i < 3 ; i++){
+        printf("==============\n"
+               "= positions\n"
+               "=-------------\n"
+               "= x: %.2f\n"
+               "= y: %.2f\n"
+               "= z: %.2f\n"
+               "=-------------\n"
+               "= radius: %.2f\n"
+               "= material: %d\n"
+               "==============\n\n",
+            spheres[i].pos.x,
+            spheres[i].pos.y,
+            spheres[i].pos.z,
+            spheres[i].radius,
+            spheres[i].material);
+    }
+    
 	unsigned char img[3*WIDTH*HEIGHT];
     (void)img;
 

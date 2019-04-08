@@ -32,35 +32,56 @@ void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned in
     /* FILE pointer */
     FILE *f;
 
-    /* Open file for writing */
     f = fopen(filename, "wb");
 
-    /* PPM header info, including the size of the image */
     fprintf(f, "P6 %d %d %d\n", width, height, 255);
-
-    /* Write the image data to the file - remember 3 byte per pixel */
     fwrite(img, 3, width*height, f);
 
-    /* Make sure you close the file */
     fclose(f);
 
 }
 
-void read_scene(char* filename, sphere* spheres, ray* rays){
-    FILE *f = fopen(filename, "wb");
-    char cbuf[32];
-    while(fscanf(f,"%c",cbuf)){
-        switch(cbuf[0]){
+/**
+ * Reads scene file to supplied pointers.
+ * allocates memory to spheres pointer.
+ */
+void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3* eye){
+    FILE *f = fopen(filename, "r");
+    char c;
+    int i = 0;
+
+    fscanf(f,"%zu",numspheres);
+    *spheres = calloc(*numspheres,sizeof(sphere));
+
+    while((c = (char)fgetc(f)) != EOF){
+        switch(c){
             case 'e': // eye
-                printf("found eye!");
+            {
+                float x;
+                float y;
+                float z;
+                fscanf(f, "%f %f %f", &x, &y, &z);
+                (*eye) = (vector3){x,y,z};
                 break;
+            }
             case 's': // sphere
-                printf("found sphere!");
+            {
+                float x;
+                float y;
+                float z;
+                float radius;
+                int material;
+                fscanf(f, 
+                       "%f %f %f %f %d",
+                       &x,&y,&z,&radius,&material);
+                (*spheres)[i] = (sphere){
+                    (vector3){x,y,z},
+                        radius,
+                        material
+                };
+                i++;
                 break;
+            }
         }
     }
-    (void) filename;
-    (void) spheres;
-    (void) rays;
-    return;
 }
