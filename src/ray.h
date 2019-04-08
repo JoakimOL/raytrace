@@ -5,8 +5,8 @@
 #include "vector.h"
 
 typedef struct{
-    vector3 start;
-    vector3 dir;
+    vector3f origin;
+    vector3f dir;
 } ray;
 
 #endif

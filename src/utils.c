@@ -1,35 +1,7 @@
 #include "utils.h"
 
-bool intersectRaySphere(ray *r, sphere *s, float *t){
-    // Quadratic formula
-    // Ax² + Bx + C = 0
-    //
-    // solved by 
-    //
-    // x = (-B (+-) sqrt(D) )/ 2A
-    // D = B² - 4AC
-    float A = vector_dot(&r->dir, &r->dir);
-    vector3 dist = vector_sub(&r->start, &s->pos);
-    float B = 2 * vector_dot(&r->dir, &dist);
-    float C = vector_dot(&dist, &dist) - (s->radius * s->radius);
-    float D = B * B - 4 * A * C;
-    if(D < 0) return false;
-
-    float sqrtD = sqrtf(D);
-    float dist0 = (-B + sqrtD) / 2;
-    float dist1 = (-B - sqrtD) / 2;
-
-    if( dist0 > dist1 ) dist0 = dist1;
-    if((dist0 > 0.001f) && (dist0 < *t)){
-        *t = dist0;
-        return true;
-    }
-    return false;
-}
-
 void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned int height){
 
-    /* FILE pointer */
     FILE *f;
 
     f = fopen(filename, "wb");
@@ -45,7 +17,7 @@ void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned in
  * Reads scene file to supplied pointers.
  * allocates memory to spheres pointer.
  */
-void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3* eye){
+void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3f* eye){
     FILE *f = fopen(filename, "r");
     char c;
     int i = 0;
@@ -61,27 +33,38 @@ void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3* e
                 float y;
                 float z;
                 fscanf(f, "%f %f %f", &x, &y, &z);
-                (*eye) = (vector3){x,y,z};
+                (*eye) = (vector3f){x,y,z};
                 break;
             }
             case 's': // sphere
             {
-                float x;
-                float y;
-                float z;
+                vector3f pos;
                 float radius;
-                int material;
+                vector3f emit;
+                vector3f surface;
+                float transparent;
+                float reflection;
+
                 fscanf(f, 
-                       "%f %f %f %f %d",
-                       &x,&y,&z,&radius,&material);
+                       "%f %f %f %f %f %f %f %f %f %f %f %f",
+                       &pos.x,&pos.y,&pos.z,
+                       &radius,
+                       &surface.x, &surface.y, &surface.z,
+                       &emit.x, &emit.y, &emit.z,
+                       &reflection, &transparent);
                 (*spheres)[i] = (sphere){
-                    (vector3){x,y,z},
-                        radius,
-                        material
+                    pos,
+                    surface,
+                    emit,
+                    radius,
+                    transparent,
+                    reflection,
                 };
                 i++;
                 break;
             }
         }
     }
+    fclose(f);
 }
+

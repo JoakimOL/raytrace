@@ -14,7 +14,6 @@ ENDIF()
 
 set(RAY_TRACER_SOURCES
   src/main.c
-  src/ray.c
   src/ray.h
   src/utils.c
   src/utils.h
@@ -22,10 +21,6 @@ set(RAY_TRACER_SOURCES
   src/sphere.h
   src/vector.c
   src/vector.h
-  src/color.c
-  src/color.h
-  src/light.c
-  src/light.h
   )
 
 add_executable(raytracer ${RAY_TRACER_SOURCES})
