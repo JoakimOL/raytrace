@@ -4,8 +4,8 @@
 #include <getopt.h>
 #include <stdio.h>
 
-static int preview;
-static int verbose;
+int preview;
+int verbose;
 char* filename;
 
 void parse_args( int argc, char *argv[]);

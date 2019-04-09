@@ -40,6 +40,13 @@ target_compile_options(raytracer PRIVATE
   -pedantic
   )
 
+INCLUDE(FindPkgConfig)
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+
+# find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+
+TARGET_LINK_LIBRARIES(raytracer ${SDL2_LIBRARIES})
 
 IF(UNIX)
     TARGET_LINK_LIBRARIES(raytracer m)
