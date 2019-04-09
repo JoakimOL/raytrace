@@ -6,11 +6,6 @@
 #include "raytrace.h"
 
 
-enum ERRORS{
-    OK = 0,
-    INVALID_INPUT,
-};
-
 void print_usage(){
     // TODO 2
     // add parameters to help text

@@ -37,6 +37,7 @@ void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned in
  */
 void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3f* eye){
     FILE *f = fopen(filename, "r");
+    if(!f) exit(INVALID_INPUT);
     char c;
     int i = 0;
 

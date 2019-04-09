@@ -10,6 +10,11 @@
 #include "vector.h"
 
 
+enum ERRORS{
+    OK = 0,
+    INVALID_INPUT,
+};
+
 void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned int height);
 
 void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3f* eye);
