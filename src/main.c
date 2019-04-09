@@ -32,7 +32,7 @@ void preview_render(unsigned char img[3*WIDTH*HEIGHT]){
     }
     SDL_RenderPresent(renderer);
     while (1) {
-        if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+        if (SDL_PollEvent(&event) && (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE))
             break;
     }
     SDL_DestroyRenderer(renderer);
