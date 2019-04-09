@@ -9,6 +9,9 @@
 #include "ray.h"
 #include "vector.h"
 
+#define min(a,b)             (((a) < (b)) ? (a) : (b))
+#define max(a,b)             (((a) > (b)) ? (a) : (b))
+#define clamp(a, mi,ma)      min(max(a,mi),ma)
 
 enum ERRORS{
     OK = 0,
