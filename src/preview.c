@@ -16,7 +16,6 @@ int initialize_preview(struct SDL_bundle *s){
         SDL_Log("Unable to create SDL window and renderer: %s", SDL_GetError());
         return SDL_ERROR;
     }
-    SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_RENDERER_PRESENTVSYNC, &s->window, &s->renderer);
 
     return 0;
 }
