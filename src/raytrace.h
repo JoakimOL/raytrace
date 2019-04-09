@@ -4,9 +4,7 @@
 #include "ray.h"
 #include "sphere.h"
 #include "utils.h"
-
-#define WIDTH  800
-#define HEIGHT 600
+#include "args.h"
 
 vector3f trace(
         ray* ray,

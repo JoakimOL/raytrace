@@ -14,6 +14,8 @@ ENDIF()
 
 set(RAY_TRACER_SOURCES
   src/main.c
+  src/preview.c
+  src/preview.h
   src/ray.h
   src/utils.c
   src/utils.h
