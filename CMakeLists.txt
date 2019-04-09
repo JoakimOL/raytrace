@@ -21,6 +21,8 @@ set(RAY_TRACER_SOURCES
   src/sphere.h
   src/vector.c
   src/vector.h
+  src/raytrace.c
+  src/raytrace.h
   )
 
 add_executable(raytracer ${RAY_TRACER_SOURCES})
