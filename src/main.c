@@ -14,15 +14,18 @@ int main(int argc, char *argv[]){
     sphere* spheres = NULL;
 
     read_scene(filename, &numspheres, &spheres, &eye);
-    puts("finished loading scene");
+    if(verbose)
+        puts("finished loading scene");
 
     unsigned char img[3*WIDTH*HEIGHT];
 
     render(&eye, &spheres, img, numspheres);
 
     if(preview) {
-        struct SDL_bundle sdl = initialize_preview();
-        preview_render(&sdl, img);
+        struct SDL_bundle sdl;
+        if(!initialize_preview(&sdl)){
+            preview_render(&sdl, img);
+        }
         destroy_SDL(&sdl);
     }
     else

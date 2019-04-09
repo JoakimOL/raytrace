@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "sphere.h"
 #include "ray.h"
@@ -15,6 +16,7 @@
 enum ERRORS{
     OK = 0,
     INVALID_INPUT,
+    SDL_ERROR,
 };
 
 void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned int height);

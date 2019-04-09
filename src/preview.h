@@ -9,7 +9,7 @@ struct SDL_bundle{
     SDL_Window *window;
 };
 
-struct SDL_bundle initialize_preview();
+int initialize_preview(struct SDL_bundle *bundle);
 
 void destroy_SDL(struct SDL_bundle* bundle);
 

@@ -1,11 +1,24 @@
+#include "utils.h"
 #include "preview.h"
 
-struct SDL_bundle initialize_preview(){
-    struct SDL_bundle s;
+int initialize_preview(struct SDL_bundle *s){
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+        return 1;
+    }
 
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_RENDERER_PRESENTVSYNC, &s.window, &s.renderer);
-    return s;
+    if ( SDL_CreateWindowAndRenderer(
+                WIDTH,
+                HEIGHT,
+                SDL_WINDOW_SHOWN | SDL_RENDERER_PRESENTVSYNC,
+                &s->window,
+                &s->renderer) != 0) {
+        SDL_Log("Unable to create SDL window and renderer: %s", SDL_GetError());
+        return SDL_ERROR;
+    }
+    SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_RENDERER_PRESENTVSYNC, &s->window, &s->renderer);
+
+    return 0;
 }
 
 void destroy_SDL(struct SDL_bundle* bundle){
