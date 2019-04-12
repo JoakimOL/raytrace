@@ -9,6 +9,6 @@ If i complete the reference implementation, an attempt at a CUDA implementation 
 $ mkdir build && cd build/
 $ cmake ..
 $ make
-$ ./ray-tracer ../input.txt
+$ ./raytracer ../input.txt
 $ feh output.ppm            # to view the image
 ```
