@@ -32,19 +32,6 @@ void preview_render(struct SDL_bundle *bundle, unsigned char img[3*WIDTH*HEIGHT]
     SDL_Event event;
 
     SDL_SetRenderDrawColor(bundle->renderer, 0, 0, 0, 0);
-    SDL_RenderClear(bundle->renderer);
-
-    for (int y = 0; y < HEIGHT; y++){
-        for (int x = 0; x < WIDTH; x++){
-            unsigned char r = *img++;
-            unsigned char g = *img++;
-            unsigned char b = *img++;
-            SDL_SetRenderDrawColor(bundle->renderer, r, g, b, SDL_ALPHA_OPAQUE);
-            SDL_RenderDrawPoint(bundle->renderer, x, y);
-        }
-    }
-
-    SDL_RenderPresent(bundle->renderer);
 
     unsigned int startTime    = 0;
     unsigned int endTime      = 0;
@@ -72,6 +59,21 @@ void preview_render(struct SDL_bundle *bundle, unsigned char img[3*WIDTH*HEIGHT]
                 && event.type == SDL_KEYDOWN
                 && event.key.keysym.sym == SDLK_ESCAPE)
             break;
+
+        SDL_RenderClear(bundle->renderer);
+        unsigned char* img_ptr = img;
+
+        for (int y = 0; y < HEIGHT; y++){
+            for (int x = 0; x < WIDTH; x++){
+                unsigned char r = *img_ptr++;
+                unsigned char g = *img_ptr++;
+                unsigned char b = *img_ptr++;
+                SDL_SetRenderDrawColor(bundle->renderer, r, g, b, SDL_ALPHA_OPAQUE);
+                SDL_RenderDrawPoint(bundle->renderer, x, y);
+            }
+        }
+
+        SDL_RenderPresent(bundle->renderer);
 
         if(verbose)
             printf("\rFPS is: %i ", fps);
