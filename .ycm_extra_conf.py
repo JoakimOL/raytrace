@@ -8,7 +8,7 @@ compilation_database_folder =  os.path.dirname(os.path.abspath(__file__))+"/buil
 # includes relative to your project directory, for example.
 flags = [
     '-Wall',
-    '-std=c++11',
+    '-std=c11',
     '-x',
     'c',
     '-I',
