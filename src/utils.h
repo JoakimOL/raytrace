@@ -19,9 +19,20 @@ enum ERRORS{
     SDL_ERROR,
 };
 
-void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned int height);
+void saveppm(
+        char *filename,
+        unsigned char *img,
+        unsigned int width,
+        unsigned int height);
 
-void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3f* eye);
+// void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3f* eye);
+void read_scene(
+        char* filename,
+        size_t* numspheres,
+        size_t* numlights,
+        sphere** spheres,
+        light** lights,
+        vector3f* eye);
 
 
 float color_expand(float c);

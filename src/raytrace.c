@@ -3,13 +3,17 @@
 vector3f trace(
         ray* ray,
         sphere** spheres,
+        light** lights,
         int recursiondepth,
-        size_t numspheres)
+        size_t numspheres,
+        size_t numlights)
 {
     float tnear = INFINITY;
-    /* (void)tnear; */
+    float albedo = 0.18f;
+    (void)albedo;
+    (void)numlights; // Only supports one light so far
+    /* (void)lights; */
     const sphere* sphere = NULL;
-    /* (void)sphere; */
     for(size_t i = 0; i < numspheres; i++){
         float t0 = INFINITY;
         float t1 = INFINITY;
@@ -20,8 +24,12 @@ vector3f trace(
                 tnear = t0;
                 sphere = (*spheres + i);
             }
-
-            /* return color_expand_vec3f(&(*spheres + i)->color_surface); */
+            vector3f hitPoint = {
+                sphere->pos.x + ray->dir.x,
+                sphere->pos.y + ray->dir.y,
+                sphere->pos.z + ray->dir.z,
+            };
+            hitPoint = vector_scale(t0,&hitPoint);
         }
     }
 
@@ -34,18 +42,41 @@ vector3f trace(
     };
 
     vector3f hit_normal = normal_of_point(sphere, &hit);
-    float facing = max(vector_dot(&hit_normal, &ray->dir),0);
 
-    return color_expand_vec3f(
-        &(vector3f){
-            sphere->color_surface.x*facing,
-            sphere->color_surface.y*facing,
-            sphere->color_surface.z*facing
-        }
-    );
+    vector3f backwards_light = lights[0]->dir;
+
+    backwards_light.x *= -1;
+    backwards_light.y *= -1;
+    backwards_light.z *= -1;
+
+    vector3f hitColor = {
+        albedo / (float)M_PI *
+             lights[0]->intensity *
+             lights[0]->color.x *
+             max(0.f, vector_dot(&hit_normal,&backwards_light)),
+        albedo / (float)M_PI *
+             lights[0]->intensity *
+             lights[0]->color.y *
+             max(0.f, vector_dot(&hit_normal,&backwards_light)),
+        albedo / (float)M_PI *
+             lights[0]->intensity *
+             lights[0]->color.z *
+             max(0.f, vector_dot(&hit_normal,&backwards_light)),
+    };
+
+    /* printf("r: %f, g: %f, b: %f\n",hitColor.x, hitColor.y, hitColor.z); */
+
+    return color_expand_vec3f(&hitColor);
 }
 
-void render(vector3f* eye, sphere** spheres, unsigned char img[WIDTH*HEIGHT*3], size_t numspheres){
+void render(
+        vector3f* eye,
+        sphere** spheres,
+        light** lights,
+        unsigned char img[WIDTH*HEIGHT*3],
+        size_t numspheres,
+        size_t numlights)
+{
     const float fov          = 90;
     const float aspect_ratio = WIDTH / HEIGHT;
     const float angle        = tanf((float)M_PI * 0.5f * fov / 180.0f);
@@ -69,7 +100,7 @@ void render(vector3f* eye, sphere** spheres, unsigned char img[WIDTH*HEIGHT*3], 
             r.dir.z = -1;
             normalize_inplace(&r.dir);
 
-            vector3f color = trace(&r, spheres, 0, numspheres);
+            vector3f color = trace(&r, spheres, lights, 0, numspheres, numlights);
             img[(x + y * WIDTH) * 3 + 0] = (unsigned char)color.x;
             img[(x + y * WIDTH) * 3 + 1] = (unsigned char)color.y;
             img[(x + y * WIDTH) * 3 + 2] = (unsigned char)color.z;

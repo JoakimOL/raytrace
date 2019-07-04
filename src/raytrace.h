@@ -9,8 +9,16 @@
 vector3f trace(
         ray* ray,
         sphere** spheres,
+        light** lights,
         int recursiondepth,
-        size_t numspheres);
+        size_t numspheres,
+        size_t numlights);
 
-void render(vector3f* eye, sphere** spheres, unsigned char img[WIDTH*HEIGHT*3], size_t numspheres);
+void render(
+        vector3f* eye,
+        sphere** spheres,
+        light** lights,
+        unsigned char img[WIDTH*HEIGHT*3],
+        size_t numspheres,
+        size_t numlights);
 #endif

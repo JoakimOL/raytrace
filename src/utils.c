@@ -18,7 +18,11 @@ void color_expand_vec3f_inplace(vector3f* c){
         c->z*=255;
 }
 
-void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned int height){
+void saveppm(
+        char *filename,
+        unsigned char *img,
+        unsigned int width,
+        unsigned int height){
 
     FILE *f;
 
@@ -35,7 +39,14 @@ void saveppm(char *filename, unsigned char *img, unsigned int width, unsigned in
  * Reads scene file to supplied pointers.
  * allocates memory to spheres pointer.
  */
-void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3f* eye){
+void read_scene(
+        char* filename,
+        size_t* numspheres,
+        size_t* numlights,
+        sphere** spheres,
+        light** lights,
+        vector3f* eye)
+{
     FILE *f = fopen(filename, "r");
     if(!f) exit(INVALID_INPUT);
     char c;
