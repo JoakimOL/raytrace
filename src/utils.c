@@ -40,9 +40,12 @@ void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3f* 
     if(!f) exit(INVALID_INPUT);
     char c;
     int i = 0;
+    int j = 0;
 
     fscanf(f,"%zu",numspheres);
+    fscanf(f,"%zu",numlights);
     *spheres = calloc(*numspheres,sizeof(sphere));
+    *lights = calloc(*numlights,sizeof(light));
 
     while((c = (char)fgetc(f)) != EOF){
         switch(c){
@@ -53,6 +56,26 @@ void read_scene(char* filename, size_t* numspheres, sphere** spheres, vector3f* 
                 float z;
                 fscanf(f, "%f %f %f", &x, &y, &z);
                 (*eye) = (vector3f){x,y,z};
+                break;
+            }
+
+            case 'd': // distant light
+            {
+                vector3f dir;
+                vector3f color;
+                float intensity;
+
+                fscanf(f, 
+                       "%f %f %f %f %f %f %f",
+                       &dir.x,&dir.y,&dir.z,
+                       &color.x,&color.y,&color.z,
+                       &intensity);
+                (*lights)[j] = (light){
+                    dir,
+                    color,
+                    intensity,
+                };
+                j++;
                 break;
             }
             case 's': // sphere

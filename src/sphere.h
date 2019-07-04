@@ -14,6 +14,13 @@ typedef struct {
     float reflection;
 } sphere;
 
+
+typedef struct {
+    vector3f dir;   // needs normalizing
+    vector3f color;
+    float intensity; 
+} light;
+
 bool intersect(const ray *ray, const sphere *sphere, float *t0, float *t1);
 
 vector3f normal_of_point(const sphere* sphere, const vector3f *point);
